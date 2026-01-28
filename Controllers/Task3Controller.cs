@@ -6,7 +6,7 @@ using System.Numerics;
 public class Task3Controller : ControllerBase
 {
     [HttpGet]
-    public IActionResult Get(string x, string y)
+    public IActionResult Get(string x, string y, string z = null)
     {
         if (!BigInteger.TryParse(x, out var a) ||
             !BigInteger.TryParse(y, out var b) ||
@@ -16,6 +16,16 @@ public class Task3Controller : ControllerBase
         }
 
         var lcm = BigInteger.Abs(a * b) / GCD(a, b);
+
+        if (z != null)
+        {
+            if (!BigInteger.TryParse(z, out var c) || c < 1)
+            {
+                return Content("NaN", "text/plain");
+            }
+            lcm = BigInteger.Abs(lcm * c) / GCD(lcm, c);
+        }
+
         return Content(lcm.ToString(), "text/plain");
     }
 
