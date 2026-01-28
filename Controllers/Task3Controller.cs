@@ -7,7 +7,7 @@ namespace WebApplication1.Controllers
     public class Task3Controller : ControllerBase
     {
         [HttpGet]
-        [Route("app/atikvucse_protonmail_com")]
+        [Route("atikvucse_protonmail_com")]
         public IActionResult Get(string x, string y)
         {
             // Try parsing
