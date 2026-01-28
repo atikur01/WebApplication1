@@ -6,18 +6,33 @@ using System.Numerics;
 public class Task3Controller : ControllerBase
 {
     [HttpGet]
-    public IActionResult Get(string x, string y)
+    public IActionResult Get(string? x, string? y)
     {
-        if (!BigInteger.TryParse(x, out var a) ||
-            !BigInteger.TryParse(y, out var b) ||
-            a < 1 || b < 1)
+        if (string.IsNullOrEmpty(x) || string.IsNullOrEmpty(y))
         {
             return Content("NaN", "text/plain");
         }
 
-        var lcm = BigInteger.Abs(a * b) / GCD(a, b);
+        x = x.Replace("{", "").Replace("}", "");
+        y = y.Replace("{", "").Replace("}", "");
 
-        return Content(lcm.ToString(), "text/plain");
+        if (!System.Text.RegularExpressions.Regex.IsMatch(x, "^[0-9]+$") || 
+            !System.Text.RegularExpressions.Regex.IsMatch(y, "^[0-9]+$"))
+        {
+            return Content("NaN", "text/plain");
+        }
+
+        if (x == "0" || y == "0")
+        {
+            return Content("NaN", "text/plain");
+        }
+
+        var nx = BigInteger.Parse(x);
+        var ny = BigInteger.Parse(y);
+
+        var result = (nx / GCD(nx, ny)) * ny;
+
+        return Content(result.ToString(), "text/plain");
     }
 
     private BigInteger GCD(BigInteger a, BigInteger b)
