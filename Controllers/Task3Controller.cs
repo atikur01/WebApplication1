@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Numerics;
 
 namespace WebApplication1.Controllers
@@ -8,24 +8,11 @@ namespace WebApplication1.Controllers
     {
         [HttpGet]
         [Route("atikvucse_protonmail_com")]
-        public IActionResult Get(string x, string y)
+        public IActionResult Get(int x, int y, int z)
         {
-            // Try parsing
-            if (!long.TryParse(x, out long a) || !long.TryParse(y, out long b))
-            {
-                return Content("NaN", "text/plain");
-            }
+            bool result = MysteryLogic(x, y,z);
 
-            // Natural numbers only (>=1)
-            if (a < 1 || b < 1)
-            {
-                return Content("NaN", "text/plain");
-            }
-
-            long gcd = GCD(a, b);
-            long lcm = (a / gcd) * b;
-
-            return Content(lcm.ToString(), "text/plain");
+            return Content(result.ToString().ToLower(), "text/plain");
         }
 
         private long GCD(long a, long b)
@@ -38,6 +25,18 @@ namespace WebApplication1.Controllers
             }
             return a;
         }
+
+
+        private bool MysteryLogic(int a, int b, int c)
+        {
+            // 🔒 HIDDEN LOGIC (example — replace with your own)
+            // Example: checks if b is between a and c
+            return (a < b && b < c) || (c < b && b < a);
+        }
+
     }
+
+
+    
 }
 
