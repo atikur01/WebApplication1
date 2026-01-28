@@ -1,42 +1,32 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Numerics;
 
-namespace WebApplication1.Controllers
+[ApiController]
+[Route("atikvucse_protonmail_com")]
+public class Task3Controller : ControllerBase
 {
-    [ApiController]
-    public class Task3Controller : ControllerBase
+    [HttpGet]
+    public IActionResult Get(string x, string y)
     {
-        [HttpGet]
-        [Route("atikvucse_protonmail_com")]
-        public IActionResult Get(int x, int y, int z)
+        if (!BigInteger.TryParse(x, out var a) ||
+            !BigInteger.TryParse(y, out var b) ||
+            a < 1 || b < 1)
         {
-            bool result = MysteryLogic(x, y,z);
-
-            return Content(result.ToString().ToLower(), "text/plain");
+            return Content("NaN", "text/plain");
         }
 
-        private long GCD(long a, long b)
-        {
-            while (b != 0)
-            {
-                long temp = b;
-                b = a % b;
-                a = temp;
-            }
-            return a;
-        }
-
-
-        private bool MysteryLogic(int a, int b, int c)
-        {
-            // 🔒 HIDDEN LOGIC (example — replace with your own)
-            // Example: checks if b is between a and c
-            return (a < b && b < c) || (c < b && b < a);
-        }
-
+        var lcm = BigInteger.Abs(a * b) / GCD(a, b);
+        return Content(lcm.ToString(), "text/plain");
     }
 
-
-    
+    private BigInteger GCD(BigInteger a, BigInteger b)
+    {
+        while (b != 0)
+        {
+            var t = b;
+            b = a % b;
+            a = t;
+        }
+        return a;
+    }
 }
-
